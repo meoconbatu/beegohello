@@ -1,0 +1,43 @@
+name: Build and Test
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  
+jobs: 
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.14
+
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: Run Unit tests.
+        run: go test ./...
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest 
+    needs: test
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.14
+
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: Add remote origin
+        run: |
+          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
+      
+      - name: Deploy to Heroku
+        run: |
+          git push heroku HEAD:master -f
