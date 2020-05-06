@@ -33,6 +33,10 @@ jobs:
 
       - name: Check out code
         uses: actions/checkout@v2
+      
+      - name: Shallow
+        run: |
+          git fetch --all --unshallow
 
       - name: Add remote origin
         run: |
@@ -40,5 +44,4 @@ jobs:
       
       - name: Deploy to Heroku
         run: |
-          git fetch --all --unshallow
           git push heroku HEAD:master -f
