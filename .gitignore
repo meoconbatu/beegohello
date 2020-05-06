@@ -1,3 +1,4 @@
-beegohello
+beego-hello
 .env
 .vscode/
+go.sum
